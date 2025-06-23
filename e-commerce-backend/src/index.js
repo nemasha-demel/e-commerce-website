@@ -2,7 +2,7 @@ import express from 'express';
 import productRouter from './api/product.js';
 import categoryRouter from './api/category.js';
 import {connectDB} from "./infrastructure/db/index.js";
-
+import "dotenv/config";
 
 const app = express();
 

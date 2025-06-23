@@ -1,60 +1,53 @@
-import {products} from "../data.js";
 
-const getAllProducts = (req,res) =>{
+import Product from '../infrastructure/db/entities/product.js';
+
+const getAllProducts = async(req,res) =>{
+    const products = await Product.find();
     res.json(products);
 };
 
-const createProduct = (req,res) =>{
-    const newID = (products.length+1).toString();
 
-    const newProduct = {
-        _id : newID,
-        ...req.body,
-        __V: 0,
-    };
-    products.push(newProduct);
-    res.status(201).json(newProduct);
+
+const createProduct = async(req,res) =>{
+    const NewProduct = req.body;
+    await Product.create(NewProduct);
+    res.status(201).json(NewProduct);
+
 };
 
-const getProductByID = (req,res)=>{
-    const product = products.find((p)=> p._id === req.params.id);
-    if (!product) {
-        return res.status(404).json({message:'Product not found'});
-    }
-    res.json(product);
+const getProductById = async (req,res) =>{
+  const product = await Product.findById(req.params.id);
+  if (!product) {
+    return res.status(404).json({message:'Product not found'});
+  }
+
+  res.json(product);
 };
 
-const updateProductById = (req,res)=>{
-    const index = products.findIndex((p)=> p._id === req.params.id);
+const updateProductById = async (req,res) =>{
+  const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    new:true,
+  });
 
-    if (index===-1) {
-        return res.status(404).json({message:"Product not found"});
-    };
-
-    products[index] = {
-        ...products[index],
-        ...req.body,
-        _id: req.params.id,
-    };
-
-    res.json(products[index]);
+  if (!product) {
+    return res.status(404).json({message:'Product not found'});
+  }
+  res.status(200).json(product);
 };
 
-const deleteProductById = (req,res)=>{
-    const index = products.findIndex((p)=> p._id === req.params.id);
-    if (index===-1) {
-        return res.status(404).json({message:"Product not found"});
-    };
-
-    products.splice(index,1);
-    res.status(200),send();
-    
+const deleteProductById = async (req,res)=>{
+  const product = await Product.findByIdAndDelete(req,params.id);
+  if (!product) {
+    return res.status(404).json({message:'Product not found'});
+  }
+  res.status(200).json({message:'Product deleted successfully'});
 };
 
-export{
+export {
     getAllProducts,
-    getProductByID,
+    getProductById,
     createProduct,
     updateProductById,
     deleteProductById,
-}
+};
+

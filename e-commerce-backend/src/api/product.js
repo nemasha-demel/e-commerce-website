@@ -2,7 +2,7 @@ import express from "express";
 import {
     createProduct,
     getAllProducts,
-    getProductByID,
+    getProductById,
     updateProductById,
     deleteProductById,
 } from "../application/product.js";
@@ -15,7 +15,7 @@ productRouter.route('/')
     .post(createProduct);
 
 productRouter.route('/:id')
-    .get(getProductByID)
+    .get(getProductById)
     .put(updateProductById)
     .delete(deleteProductById);
 
