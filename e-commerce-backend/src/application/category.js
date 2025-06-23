@@ -1,60 +1,50 @@
-import {categories} from "../data.js";
 
-const getAllCategories = (req,res) =>{
-    res.json(categories);
+
+const getAllCategories = async (req, res) => {
+  const categories = await Category.find();
+  res.json(categories);
 };
 
-const createCategory = (req,res) =>{
-    const newID = (categories.length+1).toString();
-
-    const newCategory = {
-        _id : newID,
-        ...req.body,
-        __V: 0,
-    };
-    categories.push(newCategory);
-    res.status(201).json(newCategory);
+const createCategory = async (req, res) => {
+  const newCategory = req.body;
+  await Category.create(newCategory);
+  res.status(201).json(newCategory);
 };
 
-const getCategoryByID = (req,res)=>{
-    const category = categories.find((c)=> c._id === req.params.id);
-    if (!category) {
-        return res.status(404).json({message:'Category not found'});
-    }
-    res.json(category);
+const getCategoryById = async (req, res) => {
+  const category = await Category.findById(req.params.id);
+  if (!category) {
+    return res.status(404).json({ message: 'Category not found' });
+  }
+
+  res.json(category);
 };
 
-const updateCategoryById = (req,res)=>{
-    const index = categories.findIndex((c)=> c._id === req.params.id);
+const updateCategoryById = async (req, res) => {
+  const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
 
-    if (index===-1) {
-        return res.status(404).json({message:"Category not found"});
-    };
+  if (!category) {
+    return res.status(404).json({ message: 'Category not found' });
+  }
 
-    categories[index] = {
-        ...categories[index],
-        ...req.body,
-        _id: req.params.id,
-    };
-
-    res.json(categories[index]);
+  res.status(200).json(category);
 };
 
-const deleteCategoryById = (req,res)=>{
-    const index = categories.findIndex((p)=> p._id === req.params.id);
-    if (index===-1) {
-        return res.status(404).json({message:"Category not found"});
-    };
+const deleteCategoryById = async (req, res) => {
+  const category = await Category.findByIdAndDelete(req.params.id);
+  if (!category) {
+    return res.status(404).json({ message: 'Category not found' });
+  }
 
-    categories.splice(index,1);
-    res.status(200),send();
-    
+  res.status(200).json({ message: 'Category deleted successfully' });
 };
 
-export{
-    getAllCategories,
-    getCategoryByID,
-    createCategory,
-    updateCategoryById,
-    deleteCategoryById,
-}
+export {
+  getAllCategories,
+  createCategory,
+  getCategoryById,
+  updateCategoryById,
+  deleteCategoryById,
+};
