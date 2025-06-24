@@ -1,4 +1,4 @@
-
+import Category from "../infrastructure/db/entities/category.js";
 
 const getAllCategories = async (req, res) => {
   const categories = await Category.find();

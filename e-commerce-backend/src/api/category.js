@@ -2,7 +2,7 @@ import express from "express";
 import {
     createCategory,
     getAllCategories,
-    getCategoryByID,
+    getCategoryById,
     updateCategoryById,
     deleteCategoryById,
 } from "../application/category.js";
@@ -15,7 +15,7 @@ categoryRouter.route('/')
     .post(createCategory);
 
 categoryRouter.route('/:id')
-    .get(getCategoryByID)
+    .get(getCategoryById)
     .put(updateCategoryById)
     .delete(deleteCategoryById);
 

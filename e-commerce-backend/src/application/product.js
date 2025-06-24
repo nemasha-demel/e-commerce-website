@@ -2,8 +2,15 @@
 import Product from '../infrastructure/db/entities/product.js';
 
 const getAllProducts = async(req,res) =>{
-    const products = await Product.find();
-    res.json(products);
+    const categoryId = req.query.categoryId;
+    if (categoryId) {
+      const products = await Product.find({categoryId});
+      res.json(products);
+    }else{
+      const products = await Product.find();
+      res.json(products);
+    }
+    
 };
 
 
@@ -36,7 +43,7 @@ const updateProductById = async (req,res) =>{
 };
 
 const deleteProductById = async (req,res)=>{
-  const product = await Product.findByIdAndDelete(req,params.id);
+  const product = await Product.findByIdAndDelete(req.params.id);
   if (!product) {
     return res.status(404).json({message:'Product not found'});
   }
