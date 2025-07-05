@@ -29,7 +29,12 @@ const productSchema = new mongoose.Schema({
     featured:{
         type: Boolean,
         default:false,
-    }
+    },
+    reviews: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "Review",
+        default: [],
+    },
 });
 
 const Product = mongoose.model("Product", productSchema);
