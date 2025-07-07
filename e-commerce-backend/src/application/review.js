@@ -1,8 +1,9 @@
 import Review from "../infrastructure/db/entities/review.js";
 import Product from "../infrastructure/db/entities/product.js";
 
-const createReview = async (req, res) => {
-  const data = req.body;
+const createReview = async (req, res,next) => {
+  try {
+    const data = req.body;
     const review = await Review.create({
       review: data.review,
       rating: data.rating,
@@ -13,6 +14,10 @@ const createReview = async (req, res) => {
     await product.save();
 
     res.status(201).send();
+  } catch (error) {
+    next(error);
+  }
+  
 };
 
 export { createReview };
