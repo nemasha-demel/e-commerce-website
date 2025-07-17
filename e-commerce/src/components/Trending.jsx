@@ -4,7 +4,7 @@ import CategoryButton from "./CategoryButton";
 import ProductCard from "./ProductCard";
 import { useState } from 'react';
 
-function Trendig() {
+function Trending() {
   const [selectedCategoryId, setSelectedCategory] = useState("ALL");
 
   const filteredProduct = selectedCategoryId === "ALL"
@@ -40,4 +40,4 @@ function Trendig() {
   )
 }
 
-export default Trendig
+export default Trending

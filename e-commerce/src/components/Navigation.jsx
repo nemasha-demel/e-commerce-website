@@ -1,6 +1,7 @@
 import React from 'react'
 import { Search , ShoppingCart } from 'lucide-react';
 import { Button } from './ui/button';
+import { Link } from 'react-router';
 
 function Navigation() {
   return (
@@ -35,9 +36,9 @@ function Navigation() {
                         }
                     ].map((item)=> {
                         return(
-                            <a href={item.path} className='font-medium hover:text-gray-600'>
+                            <Link to={item.path} className='font-medium hover:text-gray-600'>
                                 {item.label}
-                            </a>
+                            </Link>
                         )
                     })
                     }
@@ -47,19 +48,19 @@ function Navigation() {
                     <Button >
                         <Search size={20}/>
                     </Button>
-                    <a href="/shop/cart">
+                    <Link to="/shop/cart">
                         <ShoppingCart size={20}/>
-                    </a>
+                    </Link>
                     
                 </div>
 
                 <div className='flex items-center space-x-4'>
-                    <a href="/shop/sign-in">
+                    <Link to="/sign-in">
                         Sign In
-                    </a>
-                    <a href="/shop/sign-up">
+                    </Link>
+                    <Link to="/sign-up">
                         Sign Up
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>
