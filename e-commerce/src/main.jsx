@@ -7,17 +7,22 @@ import HomePage from './pages/home.page.jsx'
 import ShopPage from './pages/shop.page.jsx'
 import SignInPage from './pages/sign-in.page.jsx'
 import SignUpPage from './pages/sign-up.page.jsx'
+import RootLayout from './layouts/root.layout.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
     <Routes>
-      <Route path='/' element={<HomePage/>}/>
+      <Route element={<RootLayout/>}>
+        <Route path='/' element={<HomePage/>}/>
+        <Route path='/shop'>
+          <Route path=':category' element={<ShopPage/>}/>
+        </Route>
+      </Route>
+      
       <Route path='/sign-in' element={<SignInPage/>}/>
       <Route path='/sign-up' element={<SignUpPage/>}/>
-      <Route path='/shop'>
-        <Route path=':category' element={<ShopPage/>}/>
-      </Route>
+      
     </Routes>
     </BrowserRouter>
   </StrictMode>,
