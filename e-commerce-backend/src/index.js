@@ -4,9 +4,12 @@ import categoryRouter from './api/category.js';
 import {connectDB} from "./infrastructure/db/index.js";
 import "dotenv/config";
 import reviewRouter from './api/review.js';
+import cors from 'cors';
 import gloabalErrorHandlingMiddleware from './api/middleware/global-error-handling-middleware.js';
 
 const app = express();
+
+app.use(cors({origin:"http://localhost:5173"}));
 
 app.use(express.json());
 
