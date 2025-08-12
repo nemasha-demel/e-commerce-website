@@ -2,8 +2,18 @@ import React from 'react'
 import { Search , ShoppingCart } from 'lucide-react';
 import { Button } from './ui/button';
 import { Link } from 'react-router';
+import { useSelector } from 'react-redux';
 
 function Navigation() {
+    const cartItems = useSelector((state)=> state.cart.cartItems);
+
+    console.log(cartItems);
+
+    const cartItemCount = cartItems.reduce(
+        (total,item)=> total + item.quantity,
+        0
+    );
+
   return (
     <header className='bg-white border-b border-gray-200 px-4 lg:px-16'>
         <div>
@@ -48,8 +58,11 @@ function Navigation() {
                     <Button >
                         <Search size={20}/>
                     </Button>
-                    <Link to="/shop/cart">
+                    <Link to="/shop/cart" className="p-1 relative">
                         <ShoppingCart size={20}/>
+                        <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                            {cartItemCount}
+                        </span>
                     </Link>
                     
                 </div>
