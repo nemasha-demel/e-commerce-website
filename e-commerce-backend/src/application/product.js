@@ -1,6 +1,6 @@
 import NotFoundError from '../domain/errors/not-found-error.js';
 import ValidationError from '../domain/errors/validation-error.js';
-import Product from '../infrastructure/db/entities/product.js';
+import Product from '../infrastructure/db/entities/Product.js';
 
 const getAllProducts = async(req,res,next) =>{
   try {

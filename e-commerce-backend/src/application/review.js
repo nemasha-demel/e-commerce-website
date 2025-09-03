@@ -1,5 +1,5 @@
 import Review from "../infrastructure/db/entities/review.js";
-import Product from "../infrastructure/db/entities/product.js";
+import Product from "../infrastructure/db/entities/Product.js";
 
 const createReview = async (req, res,next) => {
   try {

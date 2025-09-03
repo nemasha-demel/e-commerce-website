@@ -1,4 +1,4 @@
-import Category from "../infrastructure/db/entities/category.js";
+import Category from "../infrastructure/db/entities/Category.js";
 import ValidationError from "../domain/errors/validation-error.js";
 import NotFoundError from "../domain/errors/not-found-error.js";
 
