@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate } from "react-router";
 import { useSelector } from "react-redux";
 import CartItem from "@/components/CartItem";
-
+import ShippingAddressForm from '@/components/ShippingAddressForm.jsx';
 
 
 function CheckoutPage() {
@@ -23,7 +23,12 @@ function CheckoutPage() {
           ))}
         </div>
       </div>
-      
+      <div className="mt-4">
+        <h3 className="text-3xl font-semibold">Enter Shipping Address</h3>
+        <div className="mt-2 w-1/2">
+          <ShippingAddressForm />
+        </div>
+      </div>
     </main>
   )
 }
