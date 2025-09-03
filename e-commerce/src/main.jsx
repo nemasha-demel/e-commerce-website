@@ -9,6 +9,7 @@ import SignInPage from './pages/sign-in.page.jsx'
 import SignUpPage from './pages/sign-up.page.jsx'
 import RootLayout from './layouts/root.layout.jsx'
 import CartPage from './pages/cart.page.jsx'
+import CheckoutPage from './pages/checkout.page.jsx'
 
 import {store} from './lib/store'
 import { Provider } from 'react-redux'
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')).render(
           <Route path='/shop'>
             <Route path=':category' element={<ShopPage/>}/>
             <Route path="cart" element={<CartPage />} />
+            <Route path="checkout" element={<CheckoutPage />} />
           </Route>
         </Route>
         
