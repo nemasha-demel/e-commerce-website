@@ -20,9 +20,9 @@ import { z } from "zod";
 
 const shippingAddresFormSchema = z.object({
   line_1: z.string().min(1).max(50),
-  line_2: z.string().min(1).max(50).optional(),
+  line_2: z.string().max(50).optional(),
   city: z.string().min(1).max(50),
-  phone: z.string().min(1).max(15),
+  phone: z.string().min(10).max(15),
 });
 
 

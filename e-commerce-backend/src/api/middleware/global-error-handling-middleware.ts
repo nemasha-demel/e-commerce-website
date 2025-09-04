@@ -1,7 +1,8 @@
-import NotFoundError from "../../domain/errors/not-found-error.js";
-import ValidationError from "../../domain/errors/validation-error.js";
+import NotFoundError from "../../domain/errors/not-found-error";
+import ValidationError from "../../domain/errors/validation-error";
+import {Request, Response, NextFunction} from "express"
 
-const gloabalErrorHandlingMiddleware = (err,req,res,next) =>{
+const gloabalErrorHandlingMiddleware = (err:Error,req:Request,res:Response,next:NextFunction) =>{
     if(err instanceof ValidationError){
         res.status(400).json({message:err.message});
     } else if(err instanceof NotFoundError){

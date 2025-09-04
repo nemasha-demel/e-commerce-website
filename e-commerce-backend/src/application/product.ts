@@ -1,8 +1,9 @@
-import NotFoundError from '../domain/errors/not-found-error.js';
-import ValidationError from '../domain/errors/validation-error.js';
-import Product from '../infrastructure/db/entities/Product.js';
+import NotFoundError from '../domain/errors/not-found-error';
+import ValidationError from '../domain/errors/validation-error';
+import Product from '../infrastructure/db/entities/Product';
+import {Request, Response, NextFunction} from "express"
 
-const getAllProducts = async(req,res,next) =>{
+const getAllProducts = async(req:Request, res:Response,next:NextFunction) =>{
   try {
     const categoryId = req.query.categoryId;
     if (categoryId) {
@@ -21,7 +22,7 @@ const getAllProducts = async(req,res,next) =>{
 
 
 
-const createProduct = async(req,res,next) =>{
+const createProduct = async(req:Request, res:Response,next:NextFunction) =>{
   try {
     const newProduct = req.body;
     if(!newProduct.name || !newProduct.price || !newProduct.description || !newProduct.categoryId){
@@ -36,7 +37,7 @@ const createProduct = async(req,res,next) =>{
 
 };
 
-const getProductById = async (req,res,next) =>{
+const getProductById = async (req:Request, res:Response,next:NextFunction) =>{
   try {
     const product = await Product.findById(req.params.id).populate("categoryId");
     if(!product){
@@ -49,7 +50,7 @@ const getProductById = async (req,res,next) =>{
   }
 };
 
-const updateProductById = async (req,res,next) =>{
+const updateProductById = async (req:Request, res:Response,next:NextFunction) =>{
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new:true,
@@ -64,7 +65,7 @@ const updateProductById = async (req,res,next) =>{
   }
 };
 
-const deleteProductById = async (req,res,next)=>{
+const deleteProductById = async (req:Request, res:Response,next:NextFunction)=>{
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
   if (!product) {

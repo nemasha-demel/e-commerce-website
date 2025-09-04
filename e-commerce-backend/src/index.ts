@@ -1,11 +1,11 @@
 import express from 'express';
-import productRouter from './api/product.js';
-import categoryRouter from './api/category.js';
-import {connectDB} from "./infrastructure/db/index.js";
+import productRouter from './api/product';
+import categoryRouter from './api/category';
+import {connectDB} from "./infrastructure/db/index";
 import "dotenv/config";
-import reviewRouter from './api/review.js';
+import reviewRouter from './api/review';
 import cors from 'cors';
-import gloabalErrorHandlingMiddleware from './api/middleware/global-error-handling-middleware.js';
+import gloabalErrorHandlingMiddleware from './api/middleware/global-error-handling-middleware';
 
 const app = express();
 
