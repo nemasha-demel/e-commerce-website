@@ -46,7 +46,7 @@ function Navigation() {
                         }
                     ].map((item)=> {
                         return(
-                            <Link to={item.path} className='font-medium hover:text-gray-600'>
+                            <Link key={item.path} to={item.path} className='font-medium hover:text-gray-600'>
                                 {item.label}
                             </Link>
                         )
