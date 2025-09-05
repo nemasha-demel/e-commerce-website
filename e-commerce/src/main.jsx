@@ -13,7 +13,8 @@ import CheckoutPage from './pages/checkout.page.jsx'
 
 import {store} from './lib/store'
 import { Provider } from 'react-redux'
-  import { ClerkProvider } from '@clerk/clerk-react'
+import { ClerkProvider } from '@clerk/clerk-react'
+import ProtectedLayout from '@/layouts/protected.layout';
 
 // Import your Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -36,7 +37,9 @@ createRoot(document.getElementById('root')).render(
           <Route path='/shop'>
             <Route path=':category' element={<ShopPage/>}/>
             <Route path="cart" element={<CartPage />} />
-            <Route path="checkout" element={<CheckoutPage />} />
+            <Route element= {<ProtectedLayout/>}>
+              <Route path="checkout" element={<CheckoutPage />} />
+            </Route>
           </Route>
         </Route>
         
