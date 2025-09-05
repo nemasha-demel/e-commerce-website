@@ -2,7 +2,8 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { useState } from "react";
-
+import { useSelector } from "react-redux";
+import { useCreateOrderMutation } from "@/lib/api";
 
 import {
   Form,
@@ -38,10 +39,23 @@ function ShippingAddressForm() {
     },
   });
 
-  function onSubmit(values) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const cart = useSelector((state) => state.cart.cartItems);
+  const [createOrder,{isLoading} ] = useCreateOrderMutation();
+  console.log(cart);
+
+
+  async function onSubmit(values) {
+    try {
+      await createOrder({
+        shippingAddress: values,
+        items: cart.map((item)=> ({
+          productId: item.product._id,
+          quantity:item.quantity,
+        })),
+      }).unwrap();
+    } catch (error) {
+      
+    }
   }
 
 

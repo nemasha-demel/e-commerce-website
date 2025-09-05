@@ -2,6 +2,8 @@ import NotFoundError from '../domain/errors/not-found-error';
 import ValidationError from '../domain/errors/validation-error';
 import Product from '../infrastructure/db/entities/Product';
 import {Request, Response, NextFunction} from "express"
+import { CreateProductDTO } from "../domain/dto/product";
+
 
 const getAllProducts = async(req:Request, res:Response,next:NextFunction) =>{
   try {
@@ -24,12 +26,13 @@ const getAllProducts = async(req:Request, res:Response,next:NextFunction) =>{
 
 const createProduct = async(req:Request, res:Response,next:NextFunction) =>{
   try {
-    const newProduct = req.body;
-    if(!newProduct.name || !newProduct.price || !newProduct.description || !newProduct.categoryId){
-      throw new ValidationError("Invalid product data");
+    const result = CreateProductDTO.safeParse(req.body);
+    if (!result.success) {
+      throw new ValidationError(result.error.message);
     }
-    await Product.create(newProduct);
-    res.status(201).json(newProduct);
+
+    await Product.create(result.data);
+    res.status(201).send();
   } catch (error) {
     next(error);
   }

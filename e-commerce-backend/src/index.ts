@@ -6,17 +6,18 @@ import "dotenv/config";
 import reviewRouter from './api/review';
 import cors from 'cors';
 import gloabalErrorHandlingMiddleware from './api/middleware/global-error-handling-middleware';
+import { orderRouter } from "./api/order";
 
 const app = express();
 
-app.use(cors({origin:"http://localhost:5173"}));
-
 app.use(express.json());
-
+app.use(cors({origin:"http://localhost:5173"}));
 
 app.use('/api/products', productRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/reviews', reviewRouter);
+app.use("/api/orders", orderRouter);
+
 
 app.use(gloabalErrorHandlingMiddleware);
 
