@@ -1,8 +1,10 @@
-import React from 'react'
+import { SignUp } from "@clerk/clerk-react"
 
 function SignUpPage() {
   return (
-    <div>SignUpPage</div>
+    <main className="flex top-6justify-center min-h-screen">
+      <SignUp/>
+    </main>
   )
 }
 
