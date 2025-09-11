@@ -1,25 +1,17 @@
-import ValidationError from "../../domain/errors/validation-error";
-import NotFoundError from "../../domain/errors/not-found-error";
-import UnauthorizedError from "../../domain/errors/unauthorized-error";
-
 import { Request, Response, NextFunction } from "express";
+import UnauthorizedError from "../../domain/errors/unauthorized-error";
+import { getAuth } from "@clerk/express";
 
-const globalErrorHandlingMiddleware = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  console.log(err);
-  if (err instanceof ValidationError) {
-    res.status(400).json({ message: err.message });
-  } else if (err instanceof NotFoundError) {
-    res.status(404).json({ message: err.message });
-  } else if (err instanceof UnauthorizedError) {
-    res.status(401).json({ message: err.message });
-  } else {
-    res.status(500).json({ message: "Internal server error" });
+const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
+  
+  const auth = getAuth(req);
+
+  if (!auth || !auth.userId) {
+    throw new UnauthorizedError("Unauthorized");
   }
+
+  console.log(auth); // contains userId, sessionId, etc.
+  next();
 };
 
-export default globalErrorHandlingMiddleware;
+export default isAuthenticated;

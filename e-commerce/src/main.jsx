@@ -10,11 +10,13 @@ import SignUpPage from './pages/sign-up.page.jsx'
 import RootLayout from './layouts/root.layout.jsx'
 import CartPage from './pages/cart.page.jsx'
 import CheckoutPage from './pages/checkout.page.jsx'
+import CreateProductPage from './pages/create-product.page.jsx'
 
 import {store} from './lib/store'
 import { Provider } from 'react-redux'
 import { ClerkProvider } from '@clerk/clerk-react'
 import ProtectedLayout from '@/layouts/protected.layout';
+import AdminProtectedLayout from './layouts/admin-protected.layout'
 
 // Import your Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -34,6 +36,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route element={<RootLayout/>}>
           <Route path='/' element={<HomePage/>}/>
+
           <Route path='/shop'>
             <Route path=':category' element={<ShopPage/>}/>
             <Route path="cart" element={<CartPage />} />
@@ -41,6 +44,14 @@ createRoot(document.getElementById('root')).render(
               <Route path="checkout" element={<CheckoutPage />} />
             </Route>
           </Route>
+
+
+          <Route element= {<ProtectedLayout/>}>
+            <Route element= {<AdminProtectedLayout/>}>
+              <Route path="/admin/products/create" element={<CreateProductPage />} />
+            </Route>
+          </Route>
+            
         </Route>
         
         <Route path='/sign-in' element={<SignInPage/>}/>

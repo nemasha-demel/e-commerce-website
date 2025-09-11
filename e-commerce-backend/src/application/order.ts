@@ -3,11 +3,12 @@ import Address from "../infrastructure/db/entities/Address";
 import Order from "../infrastructure/db/entities/Order";
 import NotFoundError from "../domain/errors/not-found-error";
 import UnauthorizedError from "../domain/errors/unauthorized-error";
+import { getAuth } from "@clerk/express";
 
 const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
-    const userId = "123";
+    const { userId } = getAuth(req);
 
     const address = await Address.create(data.shippingAddress);
     await Order.create({
@@ -24,7 +25,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
 
 const getOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = "123";
+    const { userId } = getAuth(req);
 
     const orderId = req.params.id;
 

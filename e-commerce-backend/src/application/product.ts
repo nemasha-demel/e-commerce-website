@@ -3,6 +3,10 @@ import ValidationError from '../domain/errors/validation-error';
 import Product from '../infrastructure/db/entities/Product';
 import {Request, Response, NextFunction} from "express"
 import { CreateProductDTO } from "../domain/dto/product";
+import { randomUUID } from 'crypto';
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import S3 from '../infrastructure/s3';
 
 
 const getAllProducts = async(req:Request, res:Response,next:NextFunction) =>{
@@ -81,11 +85,47 @@ const deleteProductById = async (req:Request, res:Response,next:NextFunction)=>{
   
 };
 
+
+const uploadProductImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const body = req.body;
+    const { fileType } = body;
+
+    const id = randomUUID();
+
+    const url = await getSignedUrl(
+      S3,
+      new PutObjectCommand({
+        Bucket: process.env.CLOUDFLARE_BUCKET_NAME,
+        Key: id,
+        ContentType: fileType,
+      }),
+      {
+        expiresIn: 60,
+      }
+    );
+
+    res
+      .status(200)
+      .json({
+        url,
+        publicURL: `${process.env.CLOUDFLARE_PUBLIC_DOMAIN}/${id}`,
+      });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
     getAllProducts,
     getProductById,
     createProduct,
     updateProductById,
     deleteProductById,
+    uploadProductImage,
 };
 

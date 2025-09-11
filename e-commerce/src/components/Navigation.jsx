@@ -62,6 +62,9 @@ function Navigation() {
                     }
 
                 </nav>
+                <div>
+                  <Link to="/admin/products/create">Create Product</Link>
+                </div>
 
                 <div className='flex items-center space-x-4'>
                     <button aria-label="Search" className="p-1">
