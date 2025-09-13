@@ -3,6 +3,14 @@ import ValidationError from "../domain/errors/validation-error";
 import NotFoundError from "../domain/errors/not-found-error";
 import {Request, Response, NextFunction} from "express"
 
+function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s]/g, "") 
+}
+
+
 
 const getAllCategories = async (req:Request, res:Response,next:NextFunction) => {
   try {
@@ -20,8 +28,14 @@ const createCategory = async (req:Request, res:Response,next:NextFunction) => {
     if(!newCategory.name){
       throw new ValidationError("Category name is required");
     }
-    await Category.create(newCategory);
-    res.status(201).json(newCategory);
+    const slug = generateSlug(newCategory.name);
+    const existing = await Category.findOne({ slug });
+    if (existing) {
+      throw new ValidationError("Category already exists");
+    }
+
+    const category = await Category.create({ ...newCategory, slug });
+    res.status(201).json(category);
   } catch (error) {
     next(error);
   }

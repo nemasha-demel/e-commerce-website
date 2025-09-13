@@ -36,11 +36,18 @@ createRoot(document.getElementById("root")).render(
               <Route path="/" element={<HomePage />} />
               <Route path="/shop" element={<ShopPage />}>
                 <Route path=":category" element={<ShopPage />} />
-                <Route path="cart" element={<CartPage />} />
+                {/* <Route path="cart" element={<CartPage />} />
                 <Route element={<ProtectedLayout />}>
                   <Route path="checkout" element={<CheckoutPage />} />
-                </Route>
+                </Route> */}
               </Route>
+
+              <Route path="/cart" element={<CartPage />} />
+                <Route element={<ProtectedLayout />}>
+                  <Route path="/checkout" element={<CheckoutPage />} />
+                </Route>
+
+
               <Route element={<ProtectedLayout />}>
                 <Route element={<AdminProtectedLayout />}>
                   <Route
