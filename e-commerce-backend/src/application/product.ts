@@ -1,34 +1,71 @@
-import NotFoundError from '../domain/errors/not-found-error';
-import ValidationError from '../domain/errors/validation-error';
-import Product from '../infrastructure/db/entities/Product';
-import {Request, Response, NextFunction} from "express"
+import Product from "../infrastructure/db/entities/Product";
+import ValidationError from "../domain/errors/validation-error";
+import NotFoundError from "../domain/errors/not-found-error";
+
+import { Request, Response, NextFunction } from "express";
 import { CreateProductDTO } from "../domain/dto/product";
-import { randomUUID } from 'crypto';
+import { randomUUID } from "crypto";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import S3 from '../infrastructure/s3';
+import S3 from "../infrastructure/s3";
 
-
-const getAllProducts = async(req:Request, res:Response,next:NextFunction) =>{
+const getAllProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const categoryId = req.query.categoryId;
     if (categoryId) {
-      const products = await Product.find({categoryId});
+      const products = await Product.find({ categoryId });
       res.json(products);
-    }else{
+    } else {
       const products = await Product.find();
       res.json(products);
     }
   } catch (error) {
-      next(error);
+    next(error);
   }
-    
-    
 };
 
+const getProductsForSearchQuery = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { search } = req.query;
+    const results = await Product.aggregate([
+      {
+        $search: {
+          index: "default",
+          autocomplete: {
+            path: "name",
+            query: search,
+            tokenOrder: "any",
+            fuzzy: {
+              maxEdits: 1,
+              prefixLength: 2,
+              maxExpansions: 256,
+            },
+          },
+          highlight: {
+            path: "name",
+          },
+        },
+      },
+    ]);
+    res.json(results);
+  } catch (error) {
+    next(error);
+  }
+};
 
-
-const createProduct = async(req:Request, res:Response,next:NextFunction) =>{
+const createProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = CreateProductDTO.safeParse(req.body);
     if (!result.success) {
@@ -40,29 +77,33 @@ const createProduct = async(req:Request, res:Response,next:NextFunction) =>{
   } catch (error) {
     next(error);
   }
-    
-
 };
 
-const getProductById = async (req:Request, res:Response,next:NextFunction) =>{
+const getProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const product = await Product.findById(req.params.id).populate("categoryId");
-    if(!product){
+    const product = await Product.findById(req.params.id).populate("reviews");
+    if (!product) {
       throw new NotFoundError("Product not found");
     }
-
-  res.json(product);
+    res.json(product);
   } catch (error) {
     next(error);
   }
 };
 
-const updateProductById = async (req:Request, res:Response,next:NextFunction) =>{
+const updateProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-      new:true,
+      new: true,
     });
-  
     if (!product) {
       throw new NotFoundError("Product not found");
     }
@@ -72,19 +113,21 @@ const updateProductById = async (req:Request, res:Response,next:NextFunction) =>
   }
 };
 
-const deleteProductById = async (req:Request, res:Response,next:NextFunction)=>{
+const deleteProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
-  if (!product) {
-    throw new NotFoundError("Product not found");
-  }
-  res.status(200).json({message:'Product deleted successfully'});
+    if (!product) {
+      throw new NotFoundError("Product not found");
+    }
+    res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     next(error);
   }
-  
 };
-
 
 const uploadProductImage = async (
   req: Request,
@@ -109,23 +152,21 @@ const uploadProductImage = async (
       }
     );
 
-    res
-      .status(200)
-      .json({
-        url,
-        publicURL: `${process.env.CLOUDFLARE_PUBLIC_DOMAIN}/${id}`,
-      });
+    res.status(200).json({
+      url,
+      publicURL: `${process.env.CLOUDFLARE_PUBLIC_DOMAIN}/${id}`,
+    });
   } catch (error) {
     next(error);
   }
 };
 
 export {
-    getAllProducts,
-    getProductById,
-    createProduct,
-    updateProductById,
-    deleteProductById,
-    uploadProductImage,
+  createProduct,
+  deleteProductById,
+  getAllProducts,
+  getProductById,
+  updateProductById,
+  getProductsForSearchQuery,
+  uploadProductImage,
 };
-
