@@ -30,6 +30,9 @@
        getProductsBySearch: build.query({
          query: (query) => `/products/search?search=${query}`,
        }),
+       getProductsByCategory: build.query({
+          query: (categoryId) => `/products?categoryId=${categoryId}`,
+        }),
        getAllCategories: build.query({
          query: () => `/categories`,
        }),
@@ -52,4 +55,4 @@
    
    // Export hooks for usage in functional components, which are
    // auto-generated based on the defined endpoints
-   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery } = Api;
+   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetProductsByCategoryQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery } = Api;
