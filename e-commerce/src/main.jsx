@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { store } from "./lib/store";
 import { Provider } from "react-redux";
 
@@ -16,6 +16,8 @@ import CheckoutPage from "./pages/checkout.page";
 import ProtectedLayout from "./layouts/protected.layout";
 import CreateProductPage from "./pages/create-product.page";
 import AdminProtectedLayout from "./layouts/admin-protected.layout";
+import PaymentPage from "./pages/payment.page";
+import CompletePage from "./pages/complete.page";
 
 import { ClerkProvider } from "@clerk/clerk-react";
 
@@ -36,19 +38,19 @@ createRoot(document.getElementById("root")).render(
               <Route path="/" element={<HomePage />} />
               <Route path="/shop" element={<ShopPage />}>
                 <Route path=":category" element={<ShopPage />} />
-                {/* <Route path="cart" element={<CartPage />} />
-                <Route element={<ProtectedLayout />}>
-                  <Route path="checkout" element={<CheckoutPage />} />
-                </Route> */}
               </Route>
 
+              {/* Cart routes - including nested payment and complete */}
               <Route path="/cart" element={<CartPage />} />
-                <Route element={<ProtectedLayout />}>
-                  <Route path="/checkout" element={<CheckoutPage />} />
-                </Route>
+              <Route path="/cart" element={<ProtectedLayout />}>
+                <Route path="payment" element={<PaymentPage />} />
+                <Route path="complete" element={<CompletePage />} />
+              </Route>
 
-
+              {/* Other protected routes */}
               <Route element={<ProtectedLayout />}>
+                <Route path="/checkout" element={<CheckoutPage />} />
+                
                 <Route element={<AdminProtectedLayout />}>
                   <Route
                     path="/admin/products/create"
@@ -57,6 +59,8 @@ createRoot(document.getElementById("root")).render(
                 </Route>
               </Route>
             </Route>
+            
+            {/* Auth routes outside of RootLayout */}
             <Route path="/sign-up" element={<SignUpPage />} />
             <Route path="/sign-in" element={<SignInPage />} />
           </Routes>

@@ -4,8 +4,9 @@ import { Link } from "react-router";
 import CartItem from "@/components/CartItem";
 
 function CartPage() {
-
-    const cart = useSelector((state) => state.cart.cartItems);
+  const cart = useSelector((state) => state.cart.cartItems);
+  console.log(cart);
+  
 
   return (
     <main className="px-16 min-h-screen py-8">
@@ -26,7 +27,7 @@ function CartPage() {
         )}
       </div>
     </main>
-  )
+  );
 }
 
-export default CartPage
+export default CartPage;

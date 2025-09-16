@@ -4,6 +4,8 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useCreateOrderMutation } from "@/lib/api";
+import { useNavigate } from "react-router-dom";
+
 
 import {
   Form,
@@ -38,7 +40,7 @@ function ShippingAddressForm() {
       phone: "",
     },
   });
-
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.cartItems);
   const [createOrder,{isLoading} ] = useCreateOrderMutation();
   console.log(cart);
@@ -46,13 +48,14 @@ function ShippingAddressForm() {
 
   async function onSubmit(values) {
     try {
-      await createOrder({
+      const order = await createOrder({
         shippingAddress: values,
-        items: cart.map((item)=> ({
+        orderItems: cart.map((item) => ({
           productId: item.product._id,
-          quantity:item.quantity,
+          quantity: item.quantity,
         })),
       }).unwrap();
+      navigate(`/cart/payment?orderId=${order._id}`);
     } catch (error) {
       
     }

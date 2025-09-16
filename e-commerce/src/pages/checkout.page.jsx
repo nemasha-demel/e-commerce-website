@@ -1,7 +1,7 @@
-import { Navigate } from "react-router";
-import { useSelector } from "react-redux";
 import CartItem from "@/components/CartItem";
 import ShippingAddressForm from "@/components/ShippingAddressForm";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 function CheckoutPage() {
   const cart = useSelector((state) => state.cart.cartItems);

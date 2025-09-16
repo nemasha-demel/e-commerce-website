@@ -50,9 +50,12 @@
            body: order,
          }),
        }),
+       getCheckoutSessionStatus: build.query({
+      query: (sessionId) => `/payments/session-status?session_id=${sessionId}`,
+    }),
      }),
    });
    
    // Export hooks for usage in functional components, which are
    // auto-generated based on the defined endpoints
-   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetProductsByCategoryQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery } = Api;    
+   export const { useGetAllProductsQuery, useGetProductsBySearchQuery,useGetCheckoutSessionStatusQuery, useGetProductsByCategoryQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery } = Api;    
