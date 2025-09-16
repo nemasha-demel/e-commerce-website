@@ -11,13 +11,13 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = getAuth(req);
 
     const address = await Address.create(data.shippingAddress);
-    await Order.create({
+    const order = await Order.create({
       addressId: address._id,
-      items: data.items,
+      items: data.orderItems,
       userId: userId,
     });
 
-    res.status(201).json(Order);
+    res.status(201).json(order);
   } catch (error) {
     next(error);
   }
@@ -25,7 +25,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
 
 const getOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { userId } = getAuth(req);
+    const userId = "123";
 
     const orderId = req.params.id;
 
@@ -44,4 +44,4 @@ const getOrder = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export {createOrder, getOrder}
+export { createOrder, getOrder };
