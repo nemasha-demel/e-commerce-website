@@ -1,17 +1,19 @@
 import { useGetAllProductsQuery, useGetProductsByCategoryQuery, useGetAllCategoriesQuery } from "@/lib/api";
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
-import ProductCard from "@/components/ProductCard"; // ✅ import your reusable card
+import ProductCard from "@/components/ProductCard"; // ✅ Reuse card
 
 function ShopPage() {
   const { category: slug } = useParams();
   const { data: categories } = useGetAllCategoriesQuery();
   const [categoryId, setCategoryId] = useState(null);
+  const [categoryName, setCategoryName] = useState(null); // ✅ add state for name
 
   useEffect(() => {
     if (categories && slug) {
       const category = categories.find((c) => c.slug === slug);
       setCategoryId(category?._id || null);
+      setCategoryName(category?.name || null); // ✅ store name
     }
   }, [categories, slug]);
 
@@ -28,19 +30,27 @@ function ShopPage() {
   if (isError) return <p>Error: {JSON.stringify(error)}</p>;
 
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Shop Page</h1>
-      {slug && <h2 className="text-lg mb-2 capitalize">Category: {slug}</h2>}
+    <main className="py-8 px-4 lg:px-16">
+      <div className="mb-6">
+        <div className="text-sm text-gray-600">
+          <span className=" text-xl">Shop</span>
+          {slug && (
+            <>
+              <span className="mx-1 text-xl">/</span>
+              <span className="text-3xl capitalize text-gray-800 font-medium">
+                {categoryName}
+              </span>
+            </>
+          )}
+        </div>
+      </div>
 
       {products?.length > 0 ? (
-        <ul className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-4 md:gap-y-8">
           {products.map((product) => (
-            <li key={product._id} className="border rounded-lg p-3">
-              {/* ✅ Reuse ProductCard */}
-              <ProductCard product={product} />
-            </li>
+            <ProductCard key={product._id} product={product} />
           ))}
-        </ul>
+        </div>
       ) : (
         <p>No products found.</p>
       )}

@@ -5,27 +5,29 @@ import CartItem from "@/components/CartItem";
 
 function CartPage() {
   const cart = useSelector((state) => state.cart.cartItems);
-  console.log(cart);
-  
 
   return (
-    <main className="px-16 min-h-screen py-8">
-      <h2 className="text-4xl font-bold">My Cart</h2>
-      <div className="mt-4 grid grid-cols-2 w-1/2 gap-x-4">
-        {cart.map((item, index) => (
-          <CartItem key={index} item={item} />
-        ))}
-      </div>
+    <main className="px-6 sm:px-12 lg:px-20 min-h-screen py-10 bg-white">
+      <h2 className="text-3xl font-bold text-gray-900">My Cart</h2>
 
-      <div className="mt-4">
+      <div className="mt-6 divide-y divide-gray-200 border-t border-b">
         {cart.length > 0 ? (
-          <Button asChild>
-            <Link to="/checkout">Proceed to Checkout</Link>
-          </Button>
+          cart.map((item, index) => <CartItem key={index} item={item} />)
         ) : (
-          <p>No items in cart</p>
+          <p className="text-gray-500 py-6">No items in cart</p>
         )}
       </div>
+
+      {cart.length > 0 && (
+        <div className="mt-6 flex justify-end">
+          <Button
+            asChild
+            className="bg-black text-white px-6 py-3 rounded-lg cursor-pointer"
+          >
+            <Link to="/checkout">Proceed to Checkout</Link>
+          </Button>
+        </div>
+      )}
     </main>
   );
 }

@@ -15,26 +15,27 @@ function PaymentPage() {
   }
 
   return (
-    <main className="px-8">
-      <h2 className="text-4xl font-bold">Review Your Order</h2>
-      <div className="mt-4 grid grid-cols-4 gap-x-4">
-        {cart.map((item, index) => (
-          <CartItem key={index} item={item} />
-        ))}
-      </div>
-      <div className="mt-4">
-        <p>
-          Total Price: $
-          {cart.reduce(
-            (acc, item) => acc + item.product.price * item.quantity,
-            0
-          )}
-        </p>
-      </div>
+    <main className="px-6 sm:px-12 lg:px-20 min-h-screen py-10 bg-gray-50">
+      <h2 className="text-4xl font-bold text-gray-900 mb-8">Review Your Order</h2>
 
-      <div className="mt-4">
+      <section className="bg-white p-6 rounded-2xl shadow-md mb-8">
+        <div className="divide-y divide-gray-200 border-t border-b">
+          {cart.map((item, index) => (
+            <CartItem key={index} item={item} />
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-white p-6 rounded-2xl shadow-md mb-8">
+        <p className="text-xl font-semibold text-gray-800">
+          Total Price: $
+          {cart.reduce((acc, item) => acc + item.product.price * item.quantity, 0)}
+        </p>
+      </section>
+
+      <section className="bg-white p-6 rounded-2xl shadow-md">
         <PaymentForm orderId={orderId} />
-      </div>
+      </section>
     </main>
   );
 }

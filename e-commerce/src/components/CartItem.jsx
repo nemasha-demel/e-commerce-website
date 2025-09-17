@@ -1,23 +1,21 @@
-import { Card } from "@/components/ui/card";
-
-
 function CartItem({ item }) {
   return (
-    <Card className="p-4">
-      <div className="flex items-center space-x-4">
+    <div className="flex items-center justify-between py-4">
+      <div className="flex items-center gap-4">
         <img
           src={item.product.image || "/placeholder.svg"}
           alt={item.product.name}
-          className="w-16 h-16 object-cover rounded"
+          className="w-16 h-16 object-cover rounded-md border"
         />
-        <div className="flex-1">
-          <p className="font-medium">{item.product.name}</p>
-          <p className="text-muted-foreground">${item.product.price}</p>
-          <p className="text-sm">Quantity: {item.quantity}</p>
+        <div>
+          <p className="font-medium text-gray-900">{item.product.name}</p>
+          <p className="text-gray-600 text-sm">${item.product.price}</p>
         </div>
       </div>
-    </Card>
-  )
+
+      <p className="text-sm text-gray-500">x {item.quantity}</p>
+    </div>
+  );
 }
 
-export default CartItem
+export default CartItem;

@@ -11,21 +11,27 @@ function CheckoutPage() {
   }
 
   return (
-    <main className="px-16 min-h-screen py-8">
-      <h2 className="text-4xl font-bold">Checkout</h2>
-      <div className="mt-4">
-        <h3 className="text-3xl font-semibold">Order Details</h3>
-        <div className="mt-2 grid grid-cols-4 gap-x-4">
-          {cart.map((item, index) => (
-            <CartItem key={index} item={item} />
-          ))}
-        </div>
-      </div>
-      <div className="mt-4">
-        <h3 className="text-3xl font-semibold">Enter Shipping Address</h3>
-        <div className="mt-2 w-1/2">
-          <ShippingAddressForm />
-        </div>
+    <main className="px-6 sm:px-12 lg:px-20 min-h-screen py-10 bg-gray-50">
+      <h2 className="text-4xl font-bold text-gray-900 mb-8">Checkout</h2>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <section className="bg-white p-6 rounded-2xl shadow-md max-h-fit">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4">Order Details</h3>
+          <div className="divide-y divide-gray-200 border-t border-b">
+            {cart.length > 0 ? (
+              cart.map((item, index) => <CartItem key={index} item={item} />)
+            ) : (
+              <p className="text-gray-500 py-6">No items in cart</p>
+            )}
+          </div>
+        </section>
+
+        <section className="bg-white p-6 rounded-2xl shadow-md">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4">Shipping Address</h3>
+          <div className="w-full">
+            <ShippingAddressForm />
+          </div>
+        </section>
       </div>
     </main>
   );
