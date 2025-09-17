@@ -5,26 +5,20 @@ import { useSelector } from "react-redux";
 // import { useSelector } from "react-redux";
 import { SignedIn, UserButton, SignedOut } from "@clerk/clerk-react";
 import ProductSearchForm from "./ProductSearchForm";
+import { useUser } from "@clerk/clerk-react";
 
 export default function Navigation() {
+  const { user } = useUser();
+  const isAdmin = user?.publicMetadata?.role === "admin";
+
   const cartItems = useSelector((state) => state.cart.cartItems);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const cartItems = useSelector((state) => state.cart.value);
-
   // Calculate total quantity of items in cart
   const cartItemCount = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
   );
-
-  // const calculateCartItems = () => {
-  //   const total = 0;
-  //   for (let i = 0; i < array.length; i++) {
-  //     const item = array[i];
-  //     total = total + item.quantity;
-  //   }
-  // };
 
   // Function href close mobile menu
   const closeMobileMenu = () => setIsMenuOpen(false);
@@ -35,7 +29,7 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="font-bold text-2xl">
-            Mebius
+            Vellinor
           </Link>
 
           {/* Desktop Navigation */}
@@ -73,9 +67,11 @@ export default function Navigation() {
               );
             })}
           </nav>
-          <div>
+          {isAdmin && (
+            <div>
               <Link to="/admin/products/create">Create Product</Link>
-          </div>
+            </div>
+          )}
 
           {/* Icons */}
           <div className="flex items-center space-x-4">
